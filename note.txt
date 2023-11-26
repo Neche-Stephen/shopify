@@ -1,0 +1,8 @@
+6 criteria for grading:
+
+Screen reader usage
+Keyboard usage
+Figma accuracy / Pixel perfection
+Functionality
+Code quality
+User experience 
