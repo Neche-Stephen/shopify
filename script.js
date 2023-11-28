@@ -1,13 +1,39 @@
+
+// Special global funtions for closing profile or notification menu, when expanded to avoid overlap
+
+function closeProfileMenuIfExpanded(){
+    //get Profile menu
+    const profileMenu = document.getElementById("profile_menu_items");
+    const isProfileMenuExpanded = profileMenu.classList.contains('menu_items_active');
+
+    if(isProfileMenuExpanded){
+        // add/remove "menu_items_active" class to/from profileMenu
+        profileMenu.classList.toggle('menu_items_active');
+    }
+}
+
+function closeNotificationMenuIfExpanded(){
+    //get Notification menu
+    const notificationMenu = document.getElementById("notification_menu");
+    //Check if it is expanded
+    const isNotificationMenuExpanded = notificationMenu.classList.contains('notification_list_active');
+
+    if(isNotificationMenuExpanded){
+        // add/remove "notification_list_active" class to/from notificationMenu
+        notificationMenu.classList.toggle('notification_list_active');
+    }
+}
+
 // Code for profile menu display starts here
 function triggerProfileMenu(){
-    // Get menu trigger
+    // Get profile menu trigger
     const menuTrigger = document.getElementById('store_nav_details');
-    //get menu
+    //get profile menu items container
     const menu = document.getElementById("profile_menu_items");
-    // Get all menus items
+    // Get all profile menus items
     const allMenuItems = menu.querySelectorAll('[role = "menuitem"]');
 
-    function closeMenu(){
+    function closeProfileMenu(){
         //Set aria-expanded property of menuTrigger element to "true" for screen readers
         menuTrigger.ariaExpanded = "false";
         menuTrigger.focus();
@@ -16,15 +42,13 @@ function triggerProfileMenu(){
     function handleMenuEscapeKeypress(event){
         //If user presses escape key
         if (event.key === "Escape"){
-            toggleMenu();
+            toggleProfileMenuItems();
         }
     }
 
     function handleMenuItemArrowKeyPress(event, menuItemIndex){
-
         const isLastMenuItem = menuItemIndex === allMenuItems.length - 1;
         const isFirstMenuItem = menuItemIndex === 0;
-
         const nextMenuItem = allMenuItems.item(menuItemIndex + 1);
         const prevMenuItem = allMenuItems.item(menuItemIndex - 1);
 
@@ -37,10 +61,7 @@ function triggerProfileMenu(){
              }
              // then focus on next menu item
              nextMenuItem.focus();
-
         }
-
-
          // if the user pressed arrow left or arrow up
         if (event.key === 'ArrowLeft' || event.key === "ArrowUp"){
             // if  the user is on the first menu item, focus on last menuitem
@@ -50,7 +71,6 @@ function triggerProfileMenu(){
              }
              // then focus on the previous menu item
              prevMenuItem.focus();
-
         }
 
 
@@ -58,37 +78,35 @@ function triggerProfileMenu(){
 
     }
 
-    function openMenu(){
+    function openProfileMenu(){
         menuTrigger.ariaExpanded = "true";
         allMenuItems.item(0).focus();
         menu.addEventListener('keyup', handleMenuEscapeKeypress)
-
         // for each menu item, register an event listener for the keyup event
         allMenuItems.forEach(function (menuItem, menuItemIndex){
             menuItem.addEventListener('keyup', function(event){
                 handleMenuItemArrowKeyPress(event, menuItemIndex);
             })
         })
-
     }
 
-    function toggleMenu(){
-        // Extracted value of "aria-expanded" attribute for menuTrigger
+    function toggleProfileMenuItems(){
+        closeNotificationMenuIfExpanded(); // Close if expanded to avoid overlap
+
+        // Extractvalue of "aria-expanded" attribute for menuTrigger
         const isExpanded = menuTrigger.attributes['aria-expanded'].value === "true";
-        
-        // add "menu_items_active" class to menu
+        // add/remove "menu_items_active" class to/from menu
         menu.classList.toggle('menu_items_active');
 
         if(isExpanded){
-            closeMenu()
+            closeProfileMenu()
         } else{
-            openMenu();
+            openProfileMenu();
         }
-
     }
 
     //Add event listener to menu trigger, and call toggleMenu function when the "click" event happens
-    menuTrigger.addEventListener('click', toggleMenu);
+    menuTrigger.addEventListener('click', toggleProfileMenuItems);
 
 }
 triggerProfileMenu();
@@ -96,7 +114,7 @@ triggerProfileMenu();
 // Code for notification icon menu display starts here
 function triggerNotification(){
     // Get Notification Trigger
-    const notificationTrigger = document.getElementById('notification_bell')
+    const notificationTrigger = document.getElementById('notification_bell');
     //get Notification menu
     const notificationMenu = document.getElementById("notification_menu");
 
@@ -118,14 +136,14 @@ function triggerNotification(){
         // notificationMenu.focus();
         // const checkBtn = document.getElementById('check');
         // checkBtn.focus();
-        // notificationMenu.addEventListener('keyup', handleNotificationMenuEscapeKeypress);
+        notificationMenu.addEventListener('keyup', handleNotificationMenuEscapeKeypress);
 
     }
 
-    function toggleNotification(){
+    function toggleNotificationMenuItems(){
+        closeProfileMenuIfExpanded()
         // Extracted value of "aria-expanded" attribute for notificationTrigger
         const isNotificationMenuExpanded = notificationTrigger.attributes['aria-expanded'].value === "true";
-        
         // add "notification_list_active" class to notificationMenu
         notificationMenu.classList.toggle('notification_list_active');
 
@@ -137,7 +155,7 @@ function triggerNotification(){
     }
 
     //Add event listener to notifcation trigger
-    notificationTrigger.addEventListener('click', toggleNotification);
+    notificationTrigger.addEventListener('click', toggleNotificationMenuItems);
 }
 triggerNotification();
 
@@ -265,8 +283,7 @@ function toggleSteps(){
                 const button = step.querySelector('.step_checkbox');
                 
                 // Check if the button has data-checked="false"
-                if (button && button.getAttribute('data-checked') === 'false') {
-                console.log(`Button with data-checked="false" found in step ${i + 1}`);
+                if (button && button.getAttribute('data-checked') === 'false') {S
                 // Perform actions or store information about the specific step here
                 displayContent(i + 1);
                 return
@@ -282,14 +299,21 @@ function toggleSteps(){
 
         checkboxButtonStatus.ariaLabel = 'Loading. Please wait...';
 
+         // Time out to mock a transition period
         setTimeout(()=>{
             transitionSVG.style.display = 'none';
             uncheckedSVG.style.display = 'block';
             checkboxBtn.ariaLabel = checkboxBtn.ariaLabel.replace('as not done', 'as done');
             checkboxButtonStatus.ariaLabel = 'Successfully marked step guide as not done';
             }, 2000);
+
+        // Time out to ensure count and progress bar is updated after transition period
+            setTimeout(()=>{
+                checkedCount--;
+                updateProgressBar(checkedCount);
+            }, 2000)
     
-        checkedCount--;
+       
      }
     
     checkboxes.forEach((checkbox, index) => {
