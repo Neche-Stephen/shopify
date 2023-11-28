@@ -777,6 +777,9 @@ a.import_product{
 .step_image{
     display: none;
 }
+.step_image.first_step{
+    display: block;
+}
 
 .step_image_active{
     display: block;
@@ -784,6 +787,9 @@ a.import_product{
 
 @media (max-width:575px){
     .step_image{
+        display: none;
+    }
+    .step_image.first_step{
         display: none;
     }
 }
