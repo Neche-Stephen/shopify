@@ -277,6 +277,13 @@ nav .notification_icon:focus{
     line-height: 130%; /* 15.6px */
 }
 
+@media(max-width:575px){
+    .profile_placeholder{
+        position: relative;
+        top: 1px;
+    }
+}
+
 /* Store Menu Items */
 
 .menu_items{
@@ -523,7 +530,7 @@ nav .notification_icon:focus{
 
 .setup_guide_container{
     width: 66.66%;
-    padding: 8px;
+    padding: 16px;
     border-radius: 18px;
     border: 1px solid var(--stroke-s-50, #DBDBDB);
     background: var(--White, #FFF);
