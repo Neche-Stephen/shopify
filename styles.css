@@ -130,6 +130,17 @@ nav .notification_icon{
     }
 }
 
+nav .notification_icon:hover{
+    background: var(--font-mid-2, #616161);
+}
+nav .notification_icon:active{
+    background: var(--grey-grey-50, #656266);
+}
+nav .notification_icon:focus{
+    background: var(--grey-grey-50, #656266);
+    box-shadow: 0px 0px 0px 3px #005BD3, 0px 0px 0px 1px #000;
+}
+
 .notification_icon svg{
     /* width: 24px;
     height: 24px; */
@@ -141,8 +152,6 @@ nav .notification_icon{
     top: 68px;
     right: 16px;
     display: none;
-    /* display: block; */
-    /* display: inline-flex; */
     width: 385px;
     padding: 16px;
     flex-direction: column;
@@ -152,7 +161,11 @@ nav .notification_icon{
     border: 1px solid var(--stroke-s-50, #DBDBDB);
     background: var(--White, #FFF);
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);
-
+}
+@media(max-width:575px){
+    .notification_list{
+        width: 90%;
+    }
 }
 
 .notification_list_active{
@@ -183,8 +196,6 @@ nav .notification_icon{
     all: unset;
 }
 
-
-
 .alert_message{
     display: flex;
     width: 351px;
@@ -192,6 +203,12 @@ nav .notification_icon{
     align-items: center;
     gap: 8px;
     background: var(--states-hover, #F1F1F1);
+}
+
+@media(max-width:575px){
+    .alert_message{
+        width: 100%;
+    }
 }
 
 .alert_message p{
@@ -213,20 +230,16 @@ nav .notification_icon{
     border-radius: 8px;
     background: var(--grey-grey-200, #303030);
 }
-
-/* Style for the input element when it is in focus */
-button:focus {
-    border: 2px solid blue; /* Change the border color when focused */
-    outline: none; /* Remove the default outline */
-    /* Add other styles as needed */
-  }
-
-  a:focus{
-    border: 2px solid blue; /* Change the border color when focused */
-    outline: none; /* Remove the default outline */
-    /* Add other styles as needed */
-  }
-
+.store_details:hover{
+    background: var(--font-mid-2, #616161);
+}
+.store_details:active{
+    background: var(--grey-grey-50, #656266);
+}
+.store_details:focus{
+    background: var(--grey-grey-50, #656266);
+    box-shadow: 0px 0px 0px 3px #005BD3, 0px 0px 0px 1px #000;
+}
 .store_name{
     color: var(--font-light, #E3E3E3);
     font-family: Inter;
@@ -283,6 +296,12 @@ button:focus {
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);
 }
 
+@media(max-width:388px){
+    .menu_items{
+        width: 90%;
+    }
+}
+
 .menu_items_active{
     display: flex;
 }
@@ -337,19 +356,25 @@ button:focus {
 
 .menu_item{
     display: flex;
-    padding: 6px;
     align-items: center;
     gap: 8px;
     align-self: stretch;
 }
-
-.menu_item.user_name{
-    display: flex;
-    padding: 8px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    align-self: stretch;
+.menu_item a{
+    width: 100%;
+    padding: 6px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease-in;
+}
+.menu_item a:hover{
+    background: var(--states-hover, #F1F1F1);
+}
+.menu_item a:active{
+    background: var(--states-pressed, #F0F0F0);
+}
+.menu_item a:focus{
+    outline: none; /* Removing default focus outline */
+    border: 2px solid var(--states-focused, #005BD3);
 }
 
 .menu_item svg{
@@ -357,7 +382,23 @@ button:focus {
     height: 20px;
 }
 
-.menu_item a, span{
+.all_stores{
+    display: flex;
+    /* padding: 6px; */
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+}
+
+.menu_item .user_name{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+.menu_item a, span.gmail{
     text-decoration: none;
     color: var(--font-dark, #303030);
     font-family: Inter;
@@ -367,26 +408,25 @@ button:focus {
     line-height: 140%; 
 }
 
-.menu_item.user_name a{
+.menu_item .user_name div.user{
     font-weight: 500;
 }
 
-.menu_item.user_name span{
+.menu_item .user_name span{
     font-size: 12px;
     line-height: 130%; 
 }
 
-
-/* 
-.menu_item hr{
+.menu_items hr{
+    position: relative;
     width: 320px;
     height: 0.75px;
     color: #E1E1E1 !important;
     background-color: #E1E1E1;
     opacity: .2;
-    margin-top: 8px;
-    margin-left: -20px;
-} */
+    /* margin-top: 8px; */
+    margin-left: -7px;
+}
 
 /* Select Plan */
 .select_plan{
@@ -450,6 +490,10 @@ button:focus {
     width: 14%;
     /* white-space: nowrap; */
     /* border: 2px solid pink; */
+}
+
+.select_plan_dismiss{
+    display: none;
 }
 
 .select_plan svg{
@@ -594,14 +638,25 @@ button:focus {
 .step_checkbox{
     all:unset;
     cursor: pointer;
+    background-color: transparent;
+    border-radius: 12px;
 }
 
 .step_checkbox svg{
     width: 28px;
     height: 28px;
     cursor: pointer;
-    z-index : 1;
+    /* z-index : 1; */
     /* align-self: flex-start; */
+}
+
+.step_checkbox:focus #step_checkbox_unchecked circle{
+    fill: #d9d9d9;
+    stroke-dasharray: 0 0;
+}
+
+.step_checkbox:hover #step_checkbox_unchecked circle{
+    stroke-dasharray: 0 0;
 }
 
 .step_checkbox #step_checkbox_checked, #step_checkbox_transition{
