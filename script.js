@@ -239,40 +239,44 @@ function toggleSteps(){
      const progressText = document.querySelector('.progress_bar_number');
      const checkboxButtonStatus = document.querySelector('#shopping-item-checkbox-status');   
 
-     function toggleCheckboxOpen(checkedSVG, uncheckedSVG, transitionSVG, index){
+     function toggleCheckboxToChecked(checkedSVG, uncheckedSVG, transitionSVG, index){
         uncheckedSVG.style.display = 'none';
         transitionSVG.style.display = 'block';
 
         checkboxButtonStatus.ariaLabel = 'Loading. Please wait...';
 
+        // Time out to mock a transition period
         setTimeout(()=>{
             transitionSVG.style.display = 'none';
             checkedSVG.style.display = 'block';
             checkboxBtn.ariaLabel = checkboxBtn.ariaLabel.replace('as done', 'as not done');
+            checkboxButtonStatus.ariaLabel = 'Successfully marked step guide as done'
+        }, 2000);
 
-            checkboxButtonStatus.ariaLabel = 'Successfully marked clean your room as done'
-        }, 2000)
-
-        checkedCount++;
-        updateProgressBar(checkedCount);
-        // Loop through each 'step' element
-        for (let i = index; i < steps.length; i++) {
-            const step = steps[i];
-            
-            // Find the button inside each 'step' element
-            const button = step.querySelector('.step_checkbox');
-            
-            // Check if the button has data-checked="false"
-            if (button && button.getAttribute('data-checked') === 'false') {
-            console.log(`Button with data-checked="false" found in step ${i + 1}`);
-            // Perform actions or store information about the specific step here
-            displayContent(i + 1);
-            return
+        // Time out to ensure count and progress bar is updated after transition period
+        setTimeout(()=>{
+            checkedCount++;
+            updateProgressBar(checkedCount);
+             // Loop through each 'step' element so the next unchecked step can be displayed
+            for (let i = index; i < steps.length; i++) {
+                const step = steps[i];
+                
+                // Find the button inside each 'step' element
+                const button = step.querySelector('.step_checkbox');
+                
+                // Check if the button has data-checked="false"
+                if (button && button.getAttribute('data-checked') === 'false') {
+                console.log(`Button with data-checked="false" found in step ${i + 1}`);
+                // Perform actions or store information about the specific step here
+                displayContent(i + 1);
+                return
+                }
             }
-        }
+        }, 2000)
+       
      }
 
-     function toggleCheckboxClose(checkedSVG, uncheckedSVG, transitionSVG){
+     function toggleCheckboxToUnChecked(checkedSVG, uncheckedSVG, transitionSVG){
         checkedSVG.style.display = 'none';
         transitionSVG.style.display = 'block';
 
@@ -282,9 +286,7 @@ function toggleSteps(){
             transitionSVG.style.display = 'none';
             uncheckedSVG.style.display = 'block';
             checkboxBtn.ariaLabel = checkboxBtn.ariaLabel.replace('as not done', 'as done');
-
-            checkboxButtonStatus.ariaLabel = 'Successfully marked clean your room as not done';
-
+            checkboxButtonStatus.ariaLabel = 'Successfully marked step guide as not done';
             }, 2000);
     
         checkedCount--;
@@ -300,9 +302,9 @@ function toggleSteps(){
             const transitionSVG = this.querySelector('#step_checkbox_transition');
     
             if (isChecked) {
-                toggleCheckboxClose(checkedSVG, uncheckedSVG, transitionSVG)
+                toggleCheckboxToUnChecked(checkedSVG, uncheckedSVG, transitionSVG)
             } else {
-                toggleCheckboxOpen(checkedSVG, uncheckedSVG, transitionSVG, index);
+                toggleCheckboxToChecked(checkedSVG, uncheckedSVG, transitionSVG, index);
             }
     
             updateProgressBar(checkedCount);
