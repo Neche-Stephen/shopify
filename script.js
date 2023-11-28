@@ -225,7 +225,7 @@ function toggleSteps(){
     const steps = document.querySelectorAll('.step');
     steps.forEach((step, index)=>{
         step.addEventListener('click', (event)=>{
-        displayContent(event, index + 1)
+        displayContent(index + 1)
         })
     })
 
